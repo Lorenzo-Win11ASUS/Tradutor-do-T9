@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Tradutor do T9</title>
+  <style>
+    body {
+      background-color: #000000;
+      color: #00ff99;
+      font-family: "Courier New", monospace;
+      padding: 40px;
+    }
+    h1 {
+      color: #00ffff;
+      text-shadow: 0 0 5px #0ff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #00ff99;
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #001f1f;
+      color: #00ffcc;
+    }
+    tr:nth-child(even) {
+      background-color: #111111;
+    }
+    tr:hover {
+      background-color: #222222;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tradutor do T9</h1>
+
+  <!-- Bloco Tradutor -->
+  <form style="margin-bottom: 30px;">
+    <table style="width: 100%; max-width: 600px; margin: auto;">
+      <tr>
+        <th>Português</th>
+        <th>Modelo TA-1319</th>
+      </tr>
+      <tr>   AVISOS: As palavras não são traduzidas corretamente e se sair uma palavra com "___" é porque o tradutor não conseguiu encontrar uma tradução.
+        <td>
+          <input id="input-portugues" type="text" placeholder="Digite algo aqui" style="width: 95%; padding: 10px; font-size: 1em; background: #111; color: #00ff99; border: 1px solid #00ff99;">
+        </td>
+        <td>
+          <input id="input-ta1319" type="text" placeholder="" style="width: 95%; padding: 10px; font-size: 1em; background: #111; color: #00ff99; border: 1px solid #00ff99;" readonly>
+        </td>
+      </tr>
+    </table>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>T9 Modelo TA-1319</th>
+        <th>T9 modelo RM-590</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Mi Tueo Ben</td><td>Oi tudo bem</td></tr>
+      <tr><td>Hjtoioe</td><td>Ilumine</td></tr>
+      <tr><td>Itaseiao</td><td>Guardião</td></tr>
+      <tr><td>Compotaeos</td><td>Computador</td></tr>
+      <tr><td>Veja Bytl</td><td>Tela Azul</td></tr>
+      <tr><td>Reaaoio Risca</td><td>Rebanho Pisca</td></tr>
+      <tr><td>Capittlo</td><td>Capítulo</td></tr>
+      <tr><td>Onlia</td><td>Nokia</td></tr>
+      <tr><td>Daiza .aaa.</td><td>Faixa .aac.</td></tr>
+      <tr><td>Bytl</td><td>Azul</td></tr>
+      <tr><td>Tertas</td><td>Testar</td></tr>
+      <tr><td>Cli</td><td>Ali</td></tr>
+      <tr><td>Johas Rocke</td><td>Jogar Snake</td></tr>
+      <tr><td>Conveo</td><td>Contém</td></tr>
+      <tr><td>Palatsa</td><td>Palavra</td></tr>
+      <tr><td>Badottaea</td><td>Acentuada</td></tr>
+      <tr><td>Osasoes</td><td>Opções</td></tr>
+      <tr><td>Umaot</td><td>Tocou</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+  const palavrasEspeciais = {
+    "oi": "Mi",
+    "tudo": "Tueo",
+    "bem": "Ben",
+    "ilumine": "Hjtoioe",
+    "guardião": "Itaseiao",
+    "computador": "Compotaeos",
+    "tela": "Veja",
+    "veja": "Veja",
+    "azul": "Bytl",
+    "rebanho": "Reaaoio",
+    "pisca": "Risca",
+    "capítulo": "Capittlo",
+    "nokia": "Onlia",
+    "faixa": "Daiza",
+    ".aac.": ".aaa.",
+    "aac": "aaa", // <-- Adicionado!
+    "testar": "Tertas",
+    "ali": "Cli",
+    "jogar": "Johas",
+    "snake": "Rocke",
+    "contém": "Conveo",
+    "palavra": "Palatsa",
+    "acentuada": "Badottaea",
+    "opções": "Osasoes",
+    "tocou": "Umaot"
+  };
+
+  function traduzir(texto) {
+    if (texto.trim() === "") return "";
+    return texto.split(/\s+/).map(palavra => {
+      if (palavra.trim() === "") return ""; // Não traduz espaços
+      let temInterrogacao = palavra.endsWith("?");
+      let palavraLimpa = palavra.replace(/\?$/, "").toLowerCase();
+      let traduzida;
+      if (palavrasEspeciais[palavraLimpa]) {
+        traduzida = palavrasEspeciais[palavraLimpa];
+      } else if (/[oe]/i.test(palavraLimpa)) {
+        // Substitui O por M e E por D
+        traduzida = palavraLimpa
+          .replace(/o/g, "m")
+          .replace(/e/g, "d")
+          .replace(/O/g, "M")
+          .replace(/E/g, "D");
+      } else {
+        traduzida = "___";
+      }
+      // Substitui "!" por "."
+      traduzida = traduzida.replace(/!/g, ".");
+      if (temInterrogacao) traduzida += ".";
+      return traduzida;
+    }).join(" ");
+  }
+
+  document.getElementById('input-portugues').addEventListener('input', function() {
+    const traduzido = traduzir(this.value);
+    document.getElementById('input-ta1319').value = traduzido;
+  });
+  </script>
+</body>
+</html>
+
+<h2> DESCRIÇÃO </h2>
+Feito por Lorenzo & Copilot / Versão 3.7
